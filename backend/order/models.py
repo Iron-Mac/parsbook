@@ -1,7 +1,7 @@
 from account.models import User
 from django.db import models
 
-from library.models import Book
+from library.models import Product
 
 class Order(models.Model):
     user = models.ForeignKey(User, related_name='orders', on_delete=models.CASCADE)
@@ -13,8 +13,7 @@ class Order(models.Model):
     place = models.CharField(max_length=100)
     phone = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
-    paid_amount = models.DecimalField(blank=True, null=True)
-
+    paid_amount = models.PositiveIntegerField(("قیمت تمام شده"))
     class Meta:
         ordering = ['-created_at',]
     
@@ -23,8 +22,8 @@ class Order(models.Model):
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
-    book = models.ForeignKey(Book, related_name='items', on_delete=models.CASCADE)
-    price = models.DecimalField(("قیمت"))
+    product = models.ForeignKey(Product, related_name='items', on_delete=models.CASCADE)
+    price = models.PositiveIntegerField(("قیمت"))
     quantity = models.IntegerField(("تعداد"),default=1)
 
     def __str__(self):

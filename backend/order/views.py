@@ -19,7 +19,7 @@ def checkout(request):
     serializer = OrderSerializer(data=request.data)
 
     if serializer.is_valid():
-        paid_amount = sum(item.get('quantity') * item.get('book').price for item in serializer.validated_data['items'])
+        paid_amount = sum(item.get('quantity') * item.get('product').price for item in serializer.validated_data['items'])
 
         try:
 

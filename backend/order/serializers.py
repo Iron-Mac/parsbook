@@ -3,16 +3,16 @@ from rest_framework import serializers
 
 from .models import Order, OrderItem
 
-from library.serializers import BookSerializer
+from library.serializers import ProductSerializer
 
 class MyOrderItemSerializer(serializers.ModelSerializer):    
-    book = BookSerializer()
+    product = ProductSerializer()
 
     class Meta:
         model = OrderItem
         fields = (
             "price",
-            "book",
+            "product",
             "quantity",
         )
 
@@ -39,7 +39,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
         model = OrderItem
         fields = (
             "price",
-            "book",
+            "product",
             "quantity",
         )
 

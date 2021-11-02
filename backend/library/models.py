@@ -14,7 +14,7 @@ class Category(models.Model):
     
 
 
-class Book(models.Model):
+class Product(models.Model):
     title = models.CharField(("عنوان کتاب"), max_length=250)
     slug = models.SlugField(("اسلاگ"))
     author = models.CharField(("نوسنده"), max_length=250)
@@ -25,7 +25,7 @@ class Book(models.Model):
     description = models.TextField(("نوضیحات کتاب"))
     price = models.IntegerField(("قیمت"))
     rate = models.FloatField(("امتیاز"),max_length=10)
-    category = models.ForeignKey("Category", verbose_name=("دسته‌بندی"), on_delete=models.CASCADE, related_name= "books")
+    category = models.ForeignKey("Category", verbose_name=("دسته‌بندی"), on_delete=models.CASCADE, related_name= "products")
     publish_date = models.DateTimeField(("تاریخ"), auto_now=False, auto_now_add=False)
 
     class Meta:
@@ -34,7 +34,7 @@ class Book(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return f"/{self.category.slug}/{self.pk}"
+        return f"/{self.category.slug}/{self.slug}"
     def get_thumbnail(self):
         return 'http://127.0.0.1:8005' + self.thumbnail.url
     

@@ -1,3 +1,4 @@
+from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.core.cache import cache
 
@@ -6,24 +7,26 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from random import randint
-from .models import Book, Category
+from .models import Category, Product
 from account.models import User
-from .serializers import BookSerializer, CategorySerializer
+from .serializers import ProductSerializer, CategorySerializer
 # Create your views here.
 
 class LatestBookList(APIView):
     def get(self,request , format=None):
-        books = Book.objects.all()[0:10]
-        serializer = BookSerializer(books,many=True)
+        books = Product.objects.all()[0:10]
+        serializer = ProductSerializer(books,many=True)
         return Response(serializer.data)
 
 class BookDetail(APIView):
-    def get_object(self , category_slug , book_id):
-        return get_object_or_404(Book.objects.filter(category__slug=category_slug, pk = book_id))
-
-    def get(self,request,category_slug,book_id,format=None):
-        book= self.get_object(category_slug,book_id)
-        serializer = BookSerializer(book)
+    def get_object(self , category_slug , product_slug):
+        try:
+            return Product.objects.filter(category__slug=category_slug).get(slug=product_slug)
+        except Product.DoesNotExist:
+            raise Http404
+    def get(self,request,category_slug,product_slug,format=None):
+        book= self.get_object(category_slug,product_slug)
+        serializer = ProductSerializer(book)
         return Response(serializer.data)
 
 class CategoryDetail(APIView):
