@@ -147,4 +147,6 @@ AUTH_USER_MODEL = 'account.User'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:6379",
     "http://127.0.0.1:6379",
+    "http://localhost:8080",
+    "http://127.0.0.1:8080",
 ]
