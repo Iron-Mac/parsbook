@@ -29,6 +29,18 @@ class BookDetail(APIView):
         serializer = ProductSerializer(book)
         return Response(serializer.data)
 
+
+class BookCartDetail(APIView):
+    def get_object(self , product_id):
+        try:
+            return Product.objects.get(pk=product_id)
+        except Product.DoesNotExist:
+            raise Http404
+    def get(self,request,product_id,format=None):
+        book= self.get_object(product_id)
+        serializer = ProductSerializer(book)
+        return Response(serializer.data)
+
 class CategoryDetail(APIView):
     def get_object(self,category_slug):
         return get_object_or_404(Category.objects.filter(slug=category_slug))
