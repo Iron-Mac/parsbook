@@ -1,4 +1,3 @@
-
 from rest_framework import serializers
 
 from .models import Order, OrderItem
@@ -31,7 +30,8 @@ class MyOrderSerializer(serializers.ModelSerializer):
             "place",
             "phone",
             "items",
-            "paid_amount"
+            "paid_amount",
+            "status",
         )
 
 class OrderItemSerializer(serializers.ModelSerializer):    
@@ -58,6 +58,7 @@ class OrderSerializer(serializers.ModelSerializer):
             "place",
             "phone",
             "items",
+            "status",
         )
     
     def create(self, validated_data):

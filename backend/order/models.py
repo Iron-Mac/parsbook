@@ -4,6 +4,12 @@ from django.db import models
 from library.models import Product
 
 class Order(models.Model):
+    STATUS_CHOISES={
+        ('s',"ثبت شده"),
+        ('b',"در حال بررسی"),
+        ('f',"تحویل شده"),
+        ('e',"در حال ارسال")
+    }
     user = models.ForeignKey(User, related_name='orders', on_delete=models.CASCADE)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
@@ -14,6 +20,7 @@ class Order(models.Model):
     phone = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     paid_amount = models.PositiveIntegerField(("قیمت تمام شده"))
+    status = models.CharField(("وضعیت سفارش"),choices=STATUS_CHOISES ,max_length=50)
     class Meta:
         ordering = ['-created_at',]
     
