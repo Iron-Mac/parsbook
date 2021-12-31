@@ -119,6 +119,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+#Djoser 
+
+DJOSER = {
+    'SERIALIZERS': {
+        'current_user': 'account.serializers.CusUserSerializer',
+        'user': 'account.serializers.CusUserSerializer',
+    }
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/

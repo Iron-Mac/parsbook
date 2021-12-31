@@ -56,21 +56,21 @@ def send_reg_sms(request):
     print(request.data)
     mobile_phone = request.data
     cache_key = str(mobile_phone["mb"])
-    user = User.objects.get(username=cache_key)
+#   user = User.objects.get(username=cache_key)
     cache_time = 120
-    if user != None:
-        pin = randint(1000,9999)
-        data = pin
-        print("----------------\n",data,"\n----------------\n")
-        cache.set(cache_key,data,cache_time)
-        cache.set(cache_key+'_try',0,120)
-        return Response({
+ #   if user != None:
+    pin = randint(1000,9999)
+    data = pin
+    print("----------------\n",data,"\n----------------\n")
+    cache.set(cache_key,data,cache_time)
+    cache.set(cache_key+'_try',0,120)
+    return Response({
             'message' : 'sms sent to your terminal ;)'},status=status.HTTP_200_OK)
-    else:
+""" else:
         return Response({
             "message": "user already exist"
         },status=status.HTTP_400_BAD_REQUEST)
-
+"""
 @api_view(['POST'])
 def verify_sms(request):
     raw_data = request.data
@@ -84,7 +84,7 @@ def verify_sms(request):
     if data!=None:
         if int(tries)<3:
             if int(pin_code) == data:
-                cache.set(str(data)+"_succesfull",1,1800)
+                cache.set(mb+"_succesfull",1,1800)
                 return Response({
                     "message":"User made succesfully"
                 },status=status.HTTP_200_OK)
@@ -114,15 +114,11 @@ def register_user(request):
     passwd = str(raw_data["pass"])
     postcode =int(raw_data["postcode"])
     addr = str(raw_data["ad"])
-    pin_code = raw_data["pin"]
-    data = cache.get(mb)
     successfull=cache.get(mb+'_succesfull')
-    print("this is data")
-    print(data)
-    if data!=None:
-        if int(successfull)>0:
-            User.objects.create(username=mb,password=passwd,addres=addr,zipcode=postcode,first_name=fn,last_name=ln)
-            return Response({
+
+    if int(successfull)>0:
+        User.objects.create(username=mb,password=passwd,addres=addr,zipcode=postcode,first_name=fn,last_name=ln)
+        return Response({
                 "message":"User made succesfully"
             },status=status.HTTP_201_CREATED)
 
